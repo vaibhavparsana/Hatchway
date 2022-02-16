@@ -13,7 +13,8 @@ class App extends React.Component {
       students: [],
       DataisLoaded: false,
       searchVal: "",
-      tagVal: ""
+      tagVal: "",
+      tagtextbox: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -46,7 +47,13 @@ class App extends React.Component {
 
   tagTextboxChange = (index, event) => {
     const inputVal = event.target.value;
+    this.setState({
+      tagtextbox: event.target.value
+    })
     let users = [...this.state.students];
+    if(!users[index].tagtextbox) {
+      users[index].tagtextbox="";
+    }
     users[index].tagtextbox = inputVal;
     this.setState({
       students: users
@@ -63,9 +70,11 @@ class App extends React.Component {
       if (!users[index].tags) {
         users[index].tags = [];
       }
+      
       users[index].tags.push(inputVal);
       this.setState({
-        students: users
+        students: users,
+        tagtextbox:""
       });
     }
 
@@ -123,35 +132,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
-
-        {/* <div className="card ">
-          <div className="fifth">
-            <h2 className="sixth">Which of the below statements about electricity is not true?</h2>
-            <p className="first" >
-              <label className="rdbutton" htmlFor="option_1">Eletricity is measured in units called watts
-                <input className="" type="radio" id="option_1" name="op_1" value="Eletricity is measured in units called watts"></input>
-                <span className="checkmark"></span>
-              </label>
-            </p>
-
-            <p className="second"><label className="rdbutton" htmlFor="option_2">Eletricity flows at the speed of light
-              <input className="" type="radio" id="option_2" name="op_1" value="Eletricity flows at the speed of light"></input>
-              <span className="checkmark"></span>
-
-            </label>
-            </p>
-            <p className="third">
-              <label className="rdbutton" htmlFor="option_3">Eletricity is primary energy source
-                <input className="" type="radio" id="option_3" name="op_1" value="Eletricity is primary energy source"></input>
-                <span className="checkmark fourth"></span>
-              </label>
-            </p>
-          </div>
-        </div> */}
-
-
         <div className="container">
-
           <input className="inputBox" type="search" id="gsearch" name="gsearch" placeholder='Search by name' value={this.state.searchVal} onChange={this.handleChange} />
           <input className="d-block inputBox" type="search" id="gtag" name="gtag" placeholder='Tag by name' value={this.state.tagVal} onChange={this.handleTagChange} />
           {
@@ -221,7 +202,7 @@ class App extends React.Component {
                         )) : ""
                       }
                     </div>
-                    <input type="text" className="d-block ms-4" value={user.tagtextbox} placeholder='Add a tag' onChange={this.tagTextboxChange.bind(this, index)} onKeyDown={this.enterPress.bind(this, index)} />
+                    <input type="text" className="d-block ms-4" value={this.state.tagtextbox} placeholder='Add a tag' onChange={this.tagTextboxChange.bind(this, index)} onKeyDown={this.enterPress.bind(this, index)} />
                   </div>
                 </div>
               </div>
